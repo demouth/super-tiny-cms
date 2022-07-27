@@ -1,0 +1,8 @@
+{
+  "news": {
+    "title":"text",
+    "detail":"textarea",
+    "url": "url",
+    "date": "date"
+  }
+}
