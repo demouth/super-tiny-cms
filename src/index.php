@@ -15,20 +15,12 @@ $schemas = new Schemas();
 <body>
 
 <header class="navbar bg-light sticky-top shadow">
-    <nav class="navbar">
-        <div class="container-fluid">
-            <a href="./" class="navbar-brand mb-0 h1">ADMIN</a>
-        </div>
-    </nav>
+    <div class="container-xl">
+        <a href="./" class="navbar-brand mb-0 h1">ADMIN</a>
+    </div>
 </header>
 
-<div class="container">
-
-    <nav aria-label="breadcrumb" class="navbar bg-light ps-3 my-4">
-        <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item active" aria-current="page">home</li>
-        </ol>
-    </nav>
+<div class="container-xl mt-4">
 
     <p>
         choose schema

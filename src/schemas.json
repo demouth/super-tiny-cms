@@ -4,5 +4,9 @@
     "detail":"textarea",
     "url": "url",
     "date": "date"
+  },
+  "contents": {
+    "title":"text",
+    "detail":"textarea"
   }
 }

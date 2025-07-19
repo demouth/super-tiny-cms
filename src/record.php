@@ -71,37 +71,52 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
 <body>
 
 <header class="navbar bg-light sticky-top shadow">
-    <nav class="navbar">
-        <div class="container-fluid">
-            <a href="./" class="navbar-brand mb-0 h1">ADMIN</a>
-        </div>
-    </nav>
+    <div class="container-xl">
+        <a href="./" class="navbar-brand mb-0 h1">ADMIN</a>
+    </div>
 </header>
 
-<div class="container">
-
-    <nav aria-label="breadcrumb" class="navbar bg-light ps-3 my-4">
-        <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="./">home</a></li>
-            <li class="breadcrumb-item"><a href="./records.php?schema=<?php echo _h($schema) ?>"><?php echo _h($schema) ?></a></li>
-            <li class="breadcrumb-item active" aria-current="page">edit</li>
-        </ol>
-    </nav>
-
-
-<?php if ($error) { ?>
-
-    <div class="alert alert-danger" role="alert">
-
-        Save Error : <?php echo _h($error) ?>
-
-    </div>
-
-<?php } ?>
-
+<div class="container-xl mt-4">
 
     <div class="row">
-        <div class="col">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block d-none">
+            <div class="bg-light p-3 rounded mb-4">
+                <h6 class="mb-3">Schemas</h6>
+                <div class="list-group list-group-flush">
+                    <?php foreach($schemas->getAll() as $s) { ?>
+                        <a href="./records.php?schema=<?php echo _h($s->name()) ?>" 
+                           class="list-group-item list-group-item-action <?php echo $s->name() === $schema ? 'active' : '' ?>">
+                            <?php echo _h($s->name()) ?>
+                        </a>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Schema Selector -->
+        <div class="col-12 d-md-none mb-3">
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                    Current: <?php echo _h($schema) ?>
+                </button>
+                <ul class="dropdown-menu w-100">
+                    <?php foreach($schemas->getAll() as $s) { ?>
+                        <li><a class="dropdown-item <?php echo $s->name() === $schema ? 'active' : '' ?>" 
+                               href="./records.php?schema=<?php echo _h($s->name()) ?>"><?php echo _h($s->name()) ?></a></li>
+                    <?php } ?>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10">
+            <?php if ($error) { ?>
+                <div class="alert alert-danger" role="alert">
+                    Save Error : <?php echo _h($error) ?>
+                </div>
+            <?php } ?>
+
             <form action="" method="post">
 
 <?php
@@ -152,7 +167,6 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
             </form>
         </div>
     </div>
-
 </div>
 
 </body>

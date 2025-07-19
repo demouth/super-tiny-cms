@@ -41,43 +41,61 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
 <body>
 
 <header class="navbar bg-light sticky-top shadow">
-    <nav class="navbar">
-        <div class="container-fluid">
-            <a href="./" class="navbar-brand mb-0 h1">ADMIN</a>
-        </div>
-    </nav>
+    <div class="container-xl">
+        <a href="./" class="navbar-brand mb-0 h1">ADMIN</a>
+    </div>
 </header>
 
-<div class="container">
+<div class="container-xl mt-4">
 
-    <nav aria-label="breadcrumb" class="navbar bg-light ps-3 my-4">
-        <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="./">home</a></li>
-            <li class="breadcrumb-item active" aria-current="page"><?php echo _h($schema) ?></li>
-        </ol>
-    </nav>
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block d-none">
+            <div class="bg-light p-3 rounded mb-4">
+                <h6 class="mb-3">Schemas</h6>
+                <div class="list-group list-group-flush">
+                    <?php foreach($schemas->getAll() as $s) { ?>
+                        <a href="./records.php?schema=<?php echo _h($s->name()) ?>" 
+                           class="list-group-item list-group-item-action <?php echo $s->name() === $schema ? 'active' : '' ?>">
+                            <?php echo _h($s->name()) ?>
+                        </a>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
 
+        <!-- Mobile Schema Selector -->
+        <div class="col-12 d-md-none mb-3">
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                    Current: <?php echo _h($schema) ?>
+                </button>
+                <ul class="dropdown-menu w-100">
+                    <?php foreach($schemas->getAll() as $s) { ?>
+                        <li><a class="dropdown-item <?php echo $s->name() === $schema ? 'active' : '' ?>" 
+                               href="./records.php?schema=<?php echo _h($s->name()) ?>"><?php echo _h($s->name()) ?></a></li>
+                    <?php } ?>
+                </ul>
+            </div>
+        </div>
 
-<?php if ($error) { ?>
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10">
+            <?php if ($error) { ?>
+                <div class="alert alert-danger" role="alert">
+                    Save Error : <?php echo _h($error) ?>
+                </div>
+            <?php } ?>
 
-    <div class="alert alert-danger" role="alert">
+            <a href="./record.php?schema=<?php echo _h($schema) ?>" class="btn btn-primary mb-4">Add new record</a>
 
-        Save Error : <?php echo _h($error) ?>
-
-    </div>
-
-<?php } ?>
-
-    <a href="./record.php?schema=<?php echo _h($schema) ?>" class="btn btn-primary mb-5">Add new record</a>
-
-
-    <table class="table table-striped">
+            <table class="table table-striped">
         <thead class="table-dark">
             <tr>
-                <th scope="col">#</th>
+                <th scope="col" style="width: 80px;">#</th>
                 <th scope="col">data</th>
-                <th scope="col">edited at</th>
-                <th scope="col">action</th>
+                <th scope="col" style="width: 200px;">edited at</th>
+                <th scope="col" style="width: 150px;">action</th>
             </tr>
         </thead>
         <tbody>
@@ -90,12 +108,12 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
 ?>
 
             <tr>
-                <td>
+                <td class="pt-3 pb-0">
 
                     <?php echo _h($id) ?>
 
                 </td>
-                <td>
+                <td class="pt-3 pb-0">
 
                     <?php
                         $keys = $r->keys();
@@ -120,7 +138,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
                     ?>
 
                 </td>
-                <td>
+                <td class="pt-3 pb-0">
                     <p>
                         created at:
                         <span class="text-muted">
@@ -139,7 +157,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
                         </span>
                     </p>
                 </td>
-                <td>
+                <td class="pt-3 pb-0">
 
                     <a href="./record.php?schema=<?php echo _h($schema) ?>&id=<?php echo _h($id) ?>" class="btn btn-secondary d-block mb-2">edit</a>
                     <a href="./records.php?schema=<?php echo _h($schema) ?>&id=<?php echo _h($id) ?>&action=delete" onclick="return confirm('Delete record. Are you sure you want to do this?')" class="btn btn-danger d-block">delete</a>
@@ -151,8 +169,10 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
     }
 ?>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+        </div>
+    </div>
 </div>
 
 </body>
