@@ -70,9 +70,9 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
 </head>
 <body>
 
-<header class="navbar bg-light sticky-top shadow">
+<header class="navbar bg-dark text-white sticky-top shadow-sm">
     <div class="container-xl">
-        <a href="./" class="navbar-brand mb-0 h1"><?php echo _h(_t('admin')) ?></a>
+        <a href="./" class="navbar-brand mb-0 h1 text-white"><?php echo _h(_t('admin')) ?></a>
     </div>
 </header>
 
@@ -81,12 +81,14 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-3 col-lg-2 d-md-block d-none">
-            <div class="bg-light p-3 rounded mb-4">
-                <h6 class="mb-3"><?php echo _h(_t('schemas')) ?></h6>
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-light border-0">
+                    <h6 class="mb-0 fw-semibold text-secondary"><?php echo _h(_t('schemas')) ?></h6>
+                </div>
                 <div class="list-group list-group-flush">
                     <?php foreach($schemas->getAll() as $s) { ?>
                         <a href="./records.php?schema=<?php echo _h($s->name()) ?>" 
-                           class="list-group-item list-group-item-action <?php echo $s->name() === $schema ? 'active' : '' ?>">
+                           class="list-group-item list-group-item-action border-0 <?php echo $s->name() === $schema ? 'active' : '' ?>">
                             <?php echo _h($s->name()) ?>
                         </a>
                     <?php } ?>
@@ -111,13 +113,21 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
 
         <!-- Main Content -->
         <div class="col-md-9 col-lg-10">
+            <div class="mb-4">
+                <h3 class="text-secondary"><?php echo $id === -1 ? _h(_t('add_new_record')) : _h(_t('edit')) . ' Record' ?></h3>
+                <p class="text-muted mb-0">Schema: <strong><?php echo _h($schema) ?></strong></p>
+            </div>
+
             <?php if ($error) { ?>
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-danger border-0 shadow-sm" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
                     <?php echo _h(_t('error')) ?>: <?php echo _h($error) ?>
                 </div>
             <?php } ?>
 
-            <form action="" method="post">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <form action="" method="post">
 
 <?php
     foreach($schemas->get($schema)->getAll() as $name => $type) {
@@ -162,9 +172,14 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
     }
 ?>
 
-                <button type="submit" name="stcms--action" value="save" class="btn btn-primary my-5"><?php echo _h(_t('save')) ?></button>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="./records.php?schema=<?php echo _h($schema) ?>" class="btn btn-outline-secondary me-md-2">Cancel</a>
+                            <button type="submit" name="stcms--action" value="save" class="btn btn-primary"><?php echo _h(_t('save')) ?></button>
+                        </div>
 
-            </form>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>

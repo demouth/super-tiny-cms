@@ -40,9 +40,9 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
 </head>
 <body>
 
-<header class="navbar bg-light sticky-top shadow">
+<header class="navbar bg-dark text-white sticky-top shadow-sm">
     <div class="container-xl">
-        <a href="./" class="navbar-brand mb-0 h1"><?php echo _h(_t('admin')) ?></a>
+        <a href="./" class="navbar-brand mb-0 h1 text-white"><?php echo _h(_t('admin')) ?></a>
     </div>
 </header>
 
@@ -51,12 +51,14 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-3 col-lg-2 d-md-block d-none">
-            <div class="bg-light p-3 rounded mb-4">
-                <h6 class="mb-3"><?php echo _h(_t('schemas')) ?></h6>
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-light border-0">
+                    <h6 class="mb-0 fw-semibold text-secondary"><?php echo _h(_t('schemas')) ?></h6>
+                </div>
                 <div class="list-group list-group-flush">
                     <?php foreach($schemas->getAll() as $s) { ?>
                         <a href="./records.php?schema=<?php echo _h($s->name()) ?>" 
-                           class="list-group-item list-group-item-action <?php echo $s->name() === $schema ? 'active' : '' ?>">
+                           class="list-group-item list-group-item-action border-0 <?php echo $s->name() === $schema ? 'active' : '' ?>">
                             <?php echo _h($s->name()) ?>
                         </a>
                     <?php } ?>
@@ -81,15 +83,20 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
 
         <!-- Main Content -->
         <div class="col-md-9 col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="text-secondary mb-0"><?php echo _h($schema) ?></h3>
+                <a href="./record.php?schema=<?php echo _h($schema) ?>" class="btn btn-primary"><?php echo _h(_t('add_new_record')) ?></a>
+            </div>
+
             <?php if ($error) { ?>
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-danger border-0 shadow-sm" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
                     <?php echo _h(_t('error')) ?>: <?php echo _h($error) ?>
                 </div>
             <?php } ?>
 
-            <a href="./record.php?schema=<?php echo _h($schema) ?>" class="btn btn-primary mb-4"><?php echo _h(_t('add_new_record')) ?></a>
-
-            <table class="table table-striped">
+            <div class="card border-0 shadow-sm">
+                <table class="table table-hover mb-0">
         <thead class="table-dark">
             <tr>
                 <th scope="col" style="width: 80px;">#</th>
@@ -171,6 +178,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
 
             </tbody>
         </table>
+            </div>
         </div>
     </div>
 </div>

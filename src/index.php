@@ -14,34 +14,39 @@ $schemas = new Schemas();
 </head>
 <body>
 
-<header class="navbar bg-light sticky-top shadow">
+<header class="navbar bg-dark text-white sticky-top shadow-sm">
     <div class="container-xl">
-        <a href="./" class="navbar-brand mb-0 h1"><?php echo _h(_t('admin')) ?></a>
+        <a href="./" class="navbar-brand mb-0 h1 text-white"><?php echo _h(_t('admin')) ?></a>
     </div>
 </header>
 
-<div class="container-xl mt-4">
+<div class="container-xl mt-5">
 
-    <p>
-        <?php echo _h(_t('choose_a_schema')) ?>
-    </p>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="text-center mb-4">
+                <h2 class="text-secondary mb-3"><?php echo _h(_t('choose_a_schema')) ?></h2>
+                <p class="text-muted">Select a schema to manage your content</p>
+            </div>
 
-
-    <ul>
+            <div class="list-group shadow-sm">
 
 <?php
     foreach($schemas->getAll() as $schema) {
 ?>
 
-        <li>
-            <a href="./records.php?schema=<?php echo _h($schema->name()) ?>"><?php echo _h($schema->name()) ?></a>
-        </li>
+                <a href="./records.php?schema=<?php echo _h($schema->name()) ?>" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <span class="fw-medium"><?php echo _h($schema->name()) ?></span>
+                    <i class="bi bi-arrow-right text-muted"></i>
+                </a>
 
 <?php
     }
 ?>
 
-    </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>
