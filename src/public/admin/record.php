@@ -3,12 +3,14 @@ require_once __DIR__.'/libs/Database.php';
 require_once __DIR__.'/libs/RecordSet.php';
 require_once __DIR__.'/libs/Record.php';
 require_once __DIR__.'/libs/Schemas.php';
+require_once __DIR__.'/libs/MediaManager.php';
 require_once __DIR__.'/libs/functions.php';
 
 use stcms\Database;
 use stcms\Record;
 use stcms\Schema;
 use stcms\Schemas;
+use stcms\MediaManager;
 
 $schemas = new Schemas();
 $schema = filter_input(INPUT_GET, 'schema', FILTER_DEFAULT, ['options' => ['default'=>'']]);
@@ -46,6 +48,10 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
                 break;
             case Schema::TYPE_DATE:
                 $val = filter_input(INPUT_POST, $name, FILTER_VALIDATE_REGEXP, ['options' => ['default'=>'', 'regexp'=>'/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/']]);
+                $r->set($name, $val);
+                break;
+            case Schema::TYPE_IMAGE:
+                $val = filter_input(INPUT_POST, $name, FILTER_DEFAULT, ['options' => ['default'=>'']]);
                 $r->set($name, $val);
                 break;
             defailt:
@@ -146,8 +152,8 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
 <?php
     foreach($schemas->get($schema)->getAll() as $name => $type) {
 ?>
-                <div class="mb-3">
-                    <label class="form-label">
+                <div class="mb-5">
+                    <label class="form-label fs-5">
 
                         <?php echo _h($name) ?>
 
@@ -177,6 +183,89 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
                         if ($r->exists($name)) echo _h($r->get($name));
                     ?>" />
 
+    <?php } else if($type === Schema::TYPE_IMAGE) { ?>
+
+                    <?php
+                    $uploadedImages = MediaManager::getUploadedFiles();
+                    $currentImage = $r->exists($name) ? $r->get($name) : '';
+                    ?>
+                    
+                    <input type="hidden" name="<?php echo _h($name) ?>" id="image-field-<?php echo _h($name) ?>" value="<?php echo _h($currentImage) ?>">
+                    
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <strong><?php echo _h(_t('selected_image')) ?>:</strong>
+                            <span id="selected-name-<?php echo _h($name) ?>" class="text-muted">
+                                <?php echo $currentImage ? _h($currentImage) : _h(_t('no_image_selected')) ?>
+                            </span>
+                        </div>
+                        
+                        <?php if ($currentImage) { ?>
+                            <div id="current-preview-<?php echo _h($name) ?>" class="mb-2">
+                                <img src="<?php echo _h(MediaManager::getPublicUrl($currentImage)) ?>" 
+                                     alt="Selected image" 
+                                     class="img-thumbnail" 
+                                     style="max-width: 200px; max-height: 150px;">
+                            </div>
+                        <?php } ?>
+                        
+                        <div id="selected-preview-<?php echo _h($name) ?>" class="mb-2" style="display: none;">
+                            <img src="" alt="Selected image" class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
+                        </div>
+                        
+                        <button type="button" class="btn btn-outline-secondary btn-sm me-2" id="clear-btn-<?php echo _h($name) ?>" onclick="clearImageSelection('<?php echo _h($name) ?>')" <?php echo !$currentImage ? 'style="display: none;"' : '' ?>>
+                            <?php echo _h(_t('clear_selection')) ?>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm" id="choose-btn-<?php echo _h($name) ?>" onclick="toggleImageGallery('<?php echo _h($name) ?>')" <?php echo $currentImage ? 'style="display: none;"' : '' ?>>
+                            <?php echo _h(_t('choose_image')) ?>
+                        </button>
+                    </div>
+                    
+                    <div id="image-gallery-<?php echo _h($name) ?>" class="mt-3" style="display: none;">
+                        <?php if (count($uploadedImages) > 0) { ?>
+                            <div class="border rounded p-3 bg-light" style="max-height: 400px; overflow-y: auto;">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0"><?php echo _h(_t('select_from_uploaded_images')) ?></h6>
+                                    <button type="button" class="btn-close" onclick="toggleImageGallery('<?php echo _h($name) ?>')"></button>
+                                </div>
+                                <div class="row g-2">
+                                    <?php foreach ($uploadedImages as $image) { ?>
+                                        <div class="col-6 col-md-4 col-lg-3">
+                                            <div class="card h-100 image-option <?php echo $currentImage === $image['filename'] ? 'border-primary' : '' ?>" 
+                                                 style="cursor: pointer;" 
+                                                 onclick="selectImage('<?php echo _h($name) ?>', '<?php echo _h($image['filename']) ?>')">
+                                                <img src="<?php echo _h(MediaManager::getPublicUrl($image['filename'])) ?>" 
+                                                     class="card-img-top" 
+                                                     style="height: 120px; object-fit: cover;" 
+                                                     alt="<?php echo _h($image['filename']) ?>">
+                                                <div class="card-body p-2">
+                                                    <small class="text-muted text-truncate d-block" title="<?php echo _h($image['filename']) ?>">
+                                                        <?php echo _h(substr($image['filename'], 0, 16)) ?>...
+                                                    </small>
+                                                    <small class="text-muted">
+                                                        <?php echo round($image['size'] / 1024, 1) ?> KB
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        <?php } else { ?>
+                            <div class="alert alert-info">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span><?php echo _h(_t('no_images_uploaded')) ?></span>
+                                    <button type="button" class="btn-close" onclick="toggleImageGallery('<?php echo _h($name) ?>')"></button>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                    
+                    <div class="form-text mt-2">
+                        <?php echo _h(_t('upload_images_from_media')) ?> 
+                        <a href="./upload-form.php" target="_blank"><?php echo _h(_t('media_management')) ?></a>
+                    </div>
+
     <?php } else { ?>
     <?php } ?>
 
@@ -197,6 +286,111 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
         </div>
     </div>
 </div>
+
+<script>
+// Image selection functionality
+function selectImage(fieldName, filename) {
+    // Set value to hidden field
+    const hiddenField = document.getElementById('image-field-' + fieldName);
+    if (hiddenField) {
+        hiddenField.value = filename;
+    }
+    
+    // Display selected image name
+    const selectedNameSpan = document.getElementById('selected-name-' + fieldName);
+    if (selectedNameSpan) {
+        selectedNameSpan.textContent = filename;
+    }
+    
+    // Update preview image
+    const currentPreview = document.getElementById('current-preview-' + fieldName);
+    const selectedPreview = document.getElementById('selected-preview-' + fieldName);
+    const selectedImg = selectedPreview ? selectedPreview.querySelector('img') : null;
+    
+    if (selectedImg) {
+        selectedImg.src = '<?php echo rtrim(MediaManager::getPublicUrl(''), '/') ?>/' + filename;
+        selectedPreview.style.display = 'block';
+    }
+    
+    if (currentPreview) {
+        currentPreview.style.display = 'none';
+    }
+    
+    // Reset all image card selection states
+    const allCards = document.querySelectorAll('.image-option');
+    allCards.forEach(card => {
+        card.classList.remove('border-primary');
+    });
+    
+    // Set clicked card as selected
+    event.target.closest('.image-option').classList.add('border-primary');
+    
+    // Show clear button and hide choose button
+    const clearBtn = document.getElementById('clear-btn-' + fieldName);
+    const chooseBtn = document.getElementById('choose-btn-' + fieldName);
+    if (clearBtn) {
+        clearBtn.style.display = 'inline-block';
+    }
+    if (chooseBtn) {
+        chooseBtn.style.display = 'none';
+    }
+    
+    // Close gallery after image selection
+    toggleImageGallery(fieldName);
+}
+
+function toggleImageGallery(fieldName) {
+    const gallery = document.getElementById('image-gallery-' + fieldName);
+    if (gallery) {
+        if (gallery.style.display === 'none') {
+            gallery.style.display = 'block';
+        } else {
+            gallery.style.display = 'none';
+        }
+    }
+}
+
+function clearImageSelection(fieldName) {
+    // Clear hidden field
+    const hiddenField = document.getElementById('image-field-' + fieldName);
+    if (hiddenField) {
+        hiddenField.value = '';
+    }
+    
+    // Clear selected image name
+    const selectedNameSpan = document.getElementById('selected-name-' + fieldName);
+    if (selectedNameSpan) {
+        selectedNameSpan.textContent = '<?php echo _t('no_image_selected') ?>';
+    }
+    
+    // Hide previews
+    const currentPreview = document.getElementById('current-preview-' + fieldName);
+    const selectedPreview = document.getElementById('selected-preview-' + fieldName);
+    
+    if (currentPreview) {
+        currentPreview.style.display = 'none';
+    }
+    if (selectedPreview) {
+        selectedPreview.style.display = 'none';
+    }
+    
+    // Hide clear button and show choose button
+    const clearBtn = document.getElementById('clear-btn-' + fieldName);
+    const chooseBtn = document.getElementById('choose-btn-' + fieldName);
+    if (clearBtn) {
+        clearBtn.style.display = 'none';
+    }
+    if (chooseBtn) {
+        chooseBtn.style.display = 'inline-block';
+    }
+    
+    // Reset all image card selection states
+    const allCards = document.querySelectorAll('.image-option');
+    allCards.forEach(card => {
+        card.classList.remove('border-primary');
+    });
+}
+</script>
 
 </body>
 </html>

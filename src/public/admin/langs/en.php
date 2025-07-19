@@ -29,4 +29,10 @@ return [
     'uploaded_images' => 'Uploaded Images',
     'no_images_uploaded' => 'No images have been uploaded yet.',
     'delete_image_confirm' => 'Are you sure you want to delete this image?',
+    'no_image_selected' => 'No image selected',
+    'selected_image' => 'Selected Image',
+    'clear_selection' => 'Clear Selection',
+    'choose_image' => 'Choose Image',
+    'select_from_uploaded_images' => 'Select from Uploaded Images',
+    'upload_images_from_media' => 'Please upload images from Media Management:',
 ];

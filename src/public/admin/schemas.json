@@ -8,6 +8,7 @@
   "articles": {
     "title":"text",
     "content":"textarea",
+    "featured_image": "image",
     "published_date": "date"
   }
 }

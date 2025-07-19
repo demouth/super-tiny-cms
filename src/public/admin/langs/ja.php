@@ -29,4 +29,10 @@ return [
     'uploaded_images' => 'アップロード済み画像',
     'no_images_uploaded' => 'まだ画像がアップロードされていません。',
     'delete_image_confirm' => 'この画像を削除してもよろしいですか？',
+    'no_image_selected' => '画像なし',
+    'selected_image' => '選択中の画像',
+    'clear_selection' => '選択をクリア',
+    'choose_image' => '画像を選択',
+    'select_from_uploaded_images' => 'アップロード済み画像から選択',
+    'upload_images_from_media' => '画像はメディア管理からアップロードしてください：',
 ];

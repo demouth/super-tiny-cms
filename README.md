@@ -73,6 +73,7 @@ return [
     - `textarea` - Multi-line text input
     - `url` - URL input with validation
     - `date` - Date picker
+    - `image` - Image selection from uploaded files
 
 ### Example Configuration
 
@@ -81,12 +82,14 @@ return [
   "news": {
     "title":"text",
     "detail":"textarea",
+    "thumbnail": "image",
     "url": "url",
     "date": "date"
   },
   "articles": {
     "title":"text",
     "content":"textarea",
+    "featured_image": "image",
     "published_date": "date"
   }
 }
