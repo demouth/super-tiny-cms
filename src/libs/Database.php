@@ -3,6 +3,7 @@ namespace stcms;
 
 require_once __DIR__.'/RecordSet.php';
 require_once __DIR__.'/Record.php';
+require_once __DIR__.'/Config.php';
 
 use LogicException;
 use RuntimeException;
@@ -99,7 +100,8 @@ class Database
 
     protected static function makePath(string $schema): string
     {
-        $path = __DIR__ . '/../.data/' . $schema . '.json';
+        $dataDir = Config::getDataDirPath();
+        $path = $dataDir . '/' . $schema . '.json';
         return $path;
     }
 }
