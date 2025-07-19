@@ -3,10 +3,10 @@ namespace stcms;
 
 class Config
 {
-    private static array $config = [];
-    private static bool $loaded = false;
+    private static $config = array();
+    private static $loaded = false;
 
-    private static function load(): void
+    private static function load()
     {
         if (self::$loaded) {
             return;
@@ -21,17 +21,20 @@ class Config
         self::$loaded = true;
     }
 
-    private static function getDefaultConfig(): array
+    private static function getDefaultConfig()
     {
-        return [
-            'paths' => [
+        return array(
+            'paths' => array(
                 'data_dir' => __DIR__ . '/../.data',
                 'schemas_file' => __DIR__ . '/../schemas.json',
-            ],
-        ];
+            ),
+            'timezone' => array(
+                'default' => 'UTC',
+            ),
+        );
     }
 
-    public static function get(string $key, $default = null)
+    public static function get($key, $default = null)
     {
         self::load();
         
@@ -48,13 +51,19 @@ class Config
         return $value;
     }
 
-    public static function getDataDirPath(): string
+    public static function getDataDirPath()
     {
         return self::get('paths.data_dir', __DIR__ . '/../.data');
     }
 
-    public static function getSchemasFilePath(): string
+    public static function getSchemasFilePath()
     {
         return self::get('paths.schemas_file', __DIR__ . '/../schemas.json');
+    }
+
+    public static function initTimezone()
+    {
+        $timezone = self::get('timezone.default', 'UTC');
+        date_default_timezone_set($timezone);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array(
     'choose_a_schema' => 'スキーマを選択してください',
     'add_new_record' => '新しいレコードを追加',
     'edit' => '編集',
@@ -35,4 +35,4 @@ return [
     'choose_image' => '画像を選択',
     'select_from_uploaded_images' => 'アップロード済み画像から選択',
     'upload_images_from_media' => '画像はメディア管理からアップロードしてください：',
-];
+);

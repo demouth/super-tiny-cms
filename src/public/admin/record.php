@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/libs/Config.php';
 require_once __DIR__.'/libs/Database.php';
 require_once __DIR__.'/libs/RecordSet.php';
 require_once __DIR__.'/libs/Record.php';
@@ -6,17 +7,21 @@ require_once __DIR__.'/libs/Schemas.php';
 require_once __DIR__.'/libs/MediaManager.php';
 require_once __DIR__.'/libs/functions.php';
 
+use stcms\Config;
 use stcms\Database;
 use stcms\Record;
 use stcms\Schema;
 use stcms\Schemas;
 use stcms\MediaManager;
 
+// Initialize timezone from config
+Config::initTimezone();
+
 $schemas = new Schemas();
-$schema = filter_input(INPUT_GET, 'schema', FILTER_DEFAULT, ['options' => ['default'=>'']]);
+$schema = filter_input(INPUT_GET, 'schema', FILTER_DEFAULT, array('options' => array('default'=>'')));
 if (!$schemas->exists($schema)) return;
 
-$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT, ['options' => ['default'=>-1]]);
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT, array('options' => array('default'=>-1)));
 $db = new Database($schema);
 $rs = $db->get();
 
@@ -33,25 +38,25 @@ if ($id === -1) {
 
 
 $error = "";
-if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['default'=>'']]) === 'save') {
+if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, array('options' => array('default'=>''))) === 'save') {
     foreach ($schemas->get($schema)->getAll() as $name => $type) {
         switch ($type) {
             case Schema::TYPE_TEXT:
                 // fallthrough
             case Schema::TYPE_TEXTAREA:
-                $val = filter_input(INPUT_POST, $name, FILTER_DEFAULT, ['options' => ['default'=>'']]);
+                $val = filter_input(INPUT_POST, $name, FILTER_DEFAULT, array('options' => array('default'=>'')));
                 $r->set($name, $val);
                 break;
             case Schema::TYPE_URL:
-                $val = filter_input(INPUT_POST, $name, FILTER_VALIDATE_URL, ['options' => ['default'=>'']]);
+                $val = filter_input(INPUT_POST, $name, FILTER_VALIDATE_URL, array('options' => array('default'=>'')));
                 $r->set($name, $val);
                 break;
             case Schema::TYPE_DATE:
-                $val = filter_input(INPUT_POST, $name, FILTER_VALIDATE_REGEXP, ['options' => ['default'=>'', 'regexp'=>'/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/']]);
+                $val = filter_input(INPUT_POST, $name, FILTER_VALIDATE_REGEXP, array('options' => array('default'=>'', 'regexp'=>'/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/')));
                 $r->set($name, $val);
                 break;
             case Schema::TYPE_IMAGE:
-                $val = filter_input(INPUT_POST, $name, FILTER_DEFAULT, ['options' => ['default'=>'']]);
+                $val = filter_input(INPUT_POST, $name, FILTER_DEFAULT, array('options' => array('default'=>'')));
                 $r->set($name, $val);
                 break;
             defailt:

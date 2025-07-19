@@ -1,8 +1,13 @@
 <?php
+require_once __DIR__.'/libs/Config.php';
 require_once __DIR__.'/libs/MediaManager.php';
 require_once __DIR__.'/libs/functions.php';
 
+use stcms\Config;
 use stcms\MediaManager;
+
+// Initialize timezone from config
+Config::initTimezone();
 
 $error = '';
 $success = '';

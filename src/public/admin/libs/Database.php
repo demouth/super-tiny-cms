@@ -10,17 +10,17 @@ use RuntimeException;
 
 class Database
 {
-    protected RecordSet $data;
-    protected float $createdAt;
-    protected float $updatedAt;
-    protected string $schema = '';
+    protected $data;
+    protected $createdAt;
+    protected $updatedAt;
+    protected $schema = '';
 
-    public function __construct(string $schema)
+    public function __construct($schema)
     {
         $this->setSchema($schema);
     }
 
-    public function setSchema(string $schema): bool
+    public function setSchema($schema)
     {
         if (!preg_match('/^[a-z_-]{1,10}$/', $schema)) {
             throw new LogicException('invalid schema');
@@ -29,12 +29,12 @@ class Database
         return $this->load();
     }
 
-    public function get(): RecordSet
+    public function get()
     {
         return $this->data;
     }
 
-    public function set(RecordSet $data)
+    public function set($data)
     {
         $this->data = $data;
         return $this->write();
@@ -54,11 +54,11 @@ class Database
 
         // save
         $json = json_encode(
-            [
+            array(
                 'data' => $this->data,
                 'created_at' => $this->createdAt,
                 'updated_at' => microtime(true),
-            ],
+            ),
             JSON_PRETTY_PRINT
         );
         $r = file_put_contents($path, $json);
@@ -67,7 +67,7 @@ class Database
         }
     }
 
-    protected function load(): bool
+    protected function load()
     {
         $path = static::makePath($this->schema);
         if (!file_exists($path)) {
@@ -98,7 +98,7 @@ class Database
         return true;
     }
 
-    protected static function makePath(string $schema): string
+    protected static function makePath($schema)
     {
         $dataDir = Config::getDataDirPath();
         $path = $dataDir . '/' . $schema . '.json';

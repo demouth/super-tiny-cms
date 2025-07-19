@@ -7,7 +7,7 @@ use RuntimeException;
 
 class MediaManager
 {
-    public static function upload(array $file): string
+    public static function upload($file)
     {
         $config = Config::get('uploads');
         
@@ -43,16 +43,16 @@ class MediaManager
         return $secureFilename;
     }
     
-    public static function getUploadedFiles(): array
+    public static function getUploadedFiles()
     {
         $config = Config::get('uploads');
         $uploadDir = $config['upload_dir'];
         
         if (!is_dir($uploadDir)) {
-            return [];
+            return array();
         }
         
-        $files = [];
+        $files = array();
         $iterator = new \DirectoryIterator($uploadDir);
         
         foreach ($iterator as $fileInfo) {
@@ -64,12 +64,12 @@ class MediaManager
             $filepath = $fileInfo->getPathname();
             
             if (getimagesize($filepath)) {
-                $files[] = [
+                $files[] = array(
                     'filename' => $filename,
                     'size' => $fileInfo->getSize(),
                     'modified' => $fileInfo->getMTime(),
                     'path' => $filepath,
-                ];
+                );
             }
         }
         
@@ -80,7 +80,7 @@ class MediaManager
         return $files;
     }
     
-    public static function deleteFile(string $filename): bool
+    public static function deleteFile($filename)
     {
         $config = Config::get('uploads');
         $filepath = $config['upload_dir'] . '/' . basename($filename);
@@ -92,7 +92,7 @@ class MediaManager
         return unlink($filepath);
     }
     
-    public static function getPublicUrl(string $filename): string
+    public static function getPublicUrl($filename)
     {
         $config = Config::get('uploads');
         return $config['public_url_path'] . '/' . $filename;

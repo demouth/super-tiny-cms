@@ -1,10 +1,13 @@
 <?php
-require_once __DIR__.'/libs/Schemas.php';
 require_once __DIR__.'/libs/Config.php';
+require_once __DIR__.'/libs/Schemas.php';
 require_once __DIR__.'/libs/functions.php';
 
-use stcms\Schemas;
 use stcms\Config;
+use stcms\Schemas;
+
+// Initialize timezone from config
+Config::initTimezone();
 
 $schemas = new Schemas();
 $uploadConfig = Config::get('uploads');
@@ -13,14 +16,14 @@ $error = filter_input(INPUT_GET, 'error', FILTER_SANITIZE_STRING) ?: '';
 $success = filter_input(INPUT_GET, 'success', FILTER_SANITIZE_STRING) ?: '';
 
 // Convert MIME types to user-friendly format names
-$formatMap = [
+$formatMap = array(
     'image/jpeg' => 'JPEG',
     'image/png' => 'PNG', 
     'image/gif' => 'GIF',
     'image/webp' => 'WebP'
-];
+);
 $supportedFormats = array_map(function($mimeType) use ($formatMap) {
-    return $formatMap[$mimeType] ?? strtoupper(explode('/', $mimeType)[1]);
+    return isset($formatMap[$mimeType]) ? $formatMap[$mimeType] : strtoupper(explode('/', $mimeType)[1]);
 }, $uploadConfig['allowed_types']);
 
 $maxSizeMB = round($uploadConfig['max_size'] / (1024 * 1024), 1);

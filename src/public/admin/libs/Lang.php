@@ -3,11 +3,11 @@ namespace stcms;
 
 class Lang
 {
-    private static array $translations = [];
-    private static string $currentLang = 'en';
-    private static bool $loaded = false;
+    private static $translations = array();
+    private static $currentLang = 'en';
+    private static $loaded = false;
 
-    public static function init(?string $lang = null): void
+    public static function init($lang = null)
     {
         if ($lang) {
             self::$currentLang = $lang;
@@ -17,7 +17,7 @@ class Lang
         self::loadTranslations();
     }
 
-    private static function detectLanguage(): void
+    private static function detectLanguage()
     {
         $configLang = Config::get('language.default', 'en');
         
@@ -26,7 +26,7 @@ class Lang
             return;
         }
 
-        $acceptLanguage = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '';
+        $acceptLanguage = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '';
         if (strpos($acceptLanguage, 'ja') !== false) {
             self::$currentLang = 'ja';
         } else {
@@ -34,7 +34,7 @@ class Lang
         }
     }
 
-    private static function loadTranslations(): void
+    private static function loadTranslations()
     {
         if (self::$loaded) {
             return;
@@ -53,21 +53,21 @@ class Lang
         self::$loaded = true;
     }
 
-    public static function get(string $key, ?string $default = null): string
+    public static function get($key, $default = null)
     {
         if (!self::$loaded) {
             self::init();
         }
 
-        return self::$translations[$key] ?? $default ?? $key;
+        return isset(self::$translations[$key]) ? self::$translations[$key] : ($default !== null ? $default : $key);
     }
 
-    public static function getCurrentLang(): string
+    public static function getCurrentLang()
     {
         return self::$currentLang;
     }
 
-    public static function setLang(string $lang): void
+    public static function setLang($lang)
     {
         self::$currentLang = $lang;
         self::$loaded = false;

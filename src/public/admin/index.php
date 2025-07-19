@@ -1,8 +1,13 @@
 <?php
+require_once __DIR__.'/libs/Config.php';
 require_once __DIR__.'/libs/Schemas.php';
 require_once __DIR__.'/libs/functions.php';
 
+use stcms\Config;
 use stcms\Schemas;
+
+// Initialize timezone from config
+Config::initTimezone();
 
 $schemas = new Schemas();
 ?>

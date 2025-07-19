@@ -9,23 +9,23 @@ use RuntimeException;
 
 class Schemas
 {
-    protected array $schemas;
+    protected $schemas;
     public function __construct()
     {
         $this->load();
     }
-    public function getAll(): array
+    public function getAll()
     {
         return $this->schemas;
     }
-    public function get(string $name): Schema
+    public function get($name)
     {
         foreach($this->schemas as $schema) {
             if ($schema->name() === $name) return $schema;
         }
         throw new LogicException('no such name: ' . $name);
     }
-    public function exists(string $name): bool
+    public function exists($name)
     {
         foreach($this->schemas as $schema) {
             if ($schema->name() === $name) return true;
@@ -47,7 +47,7 @@ class Schemas
         }
     }
 
-    protected static function makePath(): string
+    protected static function makePath()
     {
         return realpath(Config::getSchemasFilePath());
     }

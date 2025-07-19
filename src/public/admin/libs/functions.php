@@ -10,7 +10,7 @@ if (!function_exists('_h')) {
 }
 
 if (!function_exists('_t')) {
-    function _t(string $key, ?string $default = null): string {
+    function _t($key, $default = null) {
         return Lang::get($key, $default);
     }
 }

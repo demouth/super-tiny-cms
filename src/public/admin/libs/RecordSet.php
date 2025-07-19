@@ -7,48 +7,48 @@ use LogicException;
 
 class RecordSet implements \JsonSerializable
 {
-    protected array $records = [];
+    protected $records = array();
 
     public function __construct()
     {
     }
-    public static function parse(array $array): RecordSet
+    public static function parse($array)
     {
         $rs = new static();
-        $rs->records = [];
+        $rs->records = array();
         foreach ($array as $key => $row) {
             $r = Record::parse($row);
             $rs->records[$key] = $r;
         }
         return $rs;
     }
-    public function add(Record $record)
+    public function add($record)
     {
         $newId = $this->nextId();
         $this->records[$newId] = $record;
     }
-    public function getAll(): array
+    public function getAll()
     {
         return $this->records;
     }
-    public function get(int $id): Record
+    public function get($id)
     {
         if ($this->exists($id)) {
             return $this->records[$id];
         }
         throw new LogicException('no such id: ' . $id);
     }
-    public function delete(int $id): bool
+    public function delete($id)
     {
         if (!$this->exists($id)) return false;
         $this->records[$id]->delete();
         return true;
     }
-    public function exists(int $id): bool
+    public function exists($id)
     {
         return isset($this->records[$id]);
     }
-    protected function nextId(): int
+    protected function nextId()
     {
         $maxId = 0;
         foreach($this->records as $id => $_) {

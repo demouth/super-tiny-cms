@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array(
     'choose_a_schema' => 'Choose a schema',
     'add_new_record' => 'Add New Record',
     'edit' => 'Edit',
@@ -35,4 +35,4 @@ return [
     'choose_image' => 'Choose Image',
     'select_from_uploaded_images' => 'Select from Uploaded Images',
     'upload_images_from_media' => 'Please upload images from Media Management:',
-];
+);

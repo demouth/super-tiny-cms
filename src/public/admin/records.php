@@ -1,23 +1,28 @@
 <?php
+require_once __DIR__.'/libs/Config.php';
 require_once __DIR__.'/libs/Database.php';
 require_once __DIR__.'/libs/RecordSet.php';
 require_once __DIR__.'/libs/Record.php';
 require_once __DIR__.'/libs/Schemas.php';
 require_once __DIR__.'/libs/functions.php';
 
+use stcms\Config;
 use stcms\Database;
 use stcms\Schemas;
 
+// Initialize timezone from config
+Config::initTimezone();
+
 
 $schemas = new Schemas();
-$schema = filter_input(INPUT_GET, 'schema', FILTER_DEFAULT, ['options' => ['default'=>'']]);
+$schema = filter_input(INPUT_GET, 'schema', FILTER_DEFAULT, array('options' => array('default'=>'')));
 if (!$schemas->exists($schema)) return;
 $db = new Database($schema);
 $rs = $db->get();
 
 $error = '';
-if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>'']]) === 'delete') {
-    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT, ['options' => ['default'=>0]]);
+if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, array('options' => array('default'=>''))) === 'delete') {
+    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT, array('options' => array('default'=>0)));
     if (!$rs->exists($id)) return;
     $r = $rs->get($id);
     if ($r->deleted()) return;

@@ -10,9 +10,9 @@ class Schema
     const TYPE_URL = 'url';
     const TYPE_DATE = 'date';
     const TYPE_IMAGE = 'image';
-    protected string $name;
-    protected array $cols;
-    public static function parse(string $name, array $array): Schema
+    protected $name;
+    protected $cols;
+    public static function parse($name, $array)
     {
         $self = new static();
         $self->name = $name;
@@ -36,11 +36,11 @@ class Schema
         $self->cols = $array;
         return $self;
     }
-    public function name(): string
+    public function name()
     {
         return $this->name;
     }
-    public function getAll(): array
+    public function getAll()
     {
         return $this->cols;
     }
