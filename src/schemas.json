@@ -5,8 +5,9 @@
     "url": "url",
     "date": "date"
   },
-  "contents": {
+  "articles": {
     "title":"text",
-    "detail":"textarea"
+    "content":"textarea",
+    "published_date": "date"
   }
 }

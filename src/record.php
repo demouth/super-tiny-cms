@@ -72,7 +72,7 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
 
 <header class="navbar bg-light sticky-top shadow">
     <div class="container-xl">
-        <a href="./" class="navbar-brand mb-0 h1">ADMIN</a>
+        <a href="./" class="navbar-brand mb-0 h1"><?php echo _h(_t('admin')) ?></a>
     </div>
 </header>
 
@@ -82,7 +82,7 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
         <!-- Sidebar -->
         <div class="col-md-3 col-lg-2 d-md-block d-none">
             <div class="bg-light p-3 rounded mb-4">
-                <h6 class="mb-3">Schemas</h6>
+                <h6 class="mb-3"><?php echo _h(_t('schemas')) ?></h6>
                 <div class="list-group list-group-flush">
                     <?php foreach($schemas->getAll() as $s) { ?>
                         <a href="./records.php?schema=<?php echo _h($s->name()) ?>" 
@@ -98,7 +98,7 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
         <div class="col-12 d-md-none mb-3">
             <div class="dropdown">
                 <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
-                    Current: <?php echo _h($schema) ?>
+                    <?php echo _h(_t('current')) ?>: <?php echo _h($schema) ?>
                 </button>
                 <ul class="dropdown-menu w-100">
                     <?php foreach($schemas->getAll() as $s) { ?>
@@ -113,7 +113,7 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
         <div class="col-md-9 col-lg-10">
             <?php if ($error) { ?>
                 <div class="alert alert-danger" role="alert">
-                    Save Error : <?php echo _h($error) ?>
+                    <?php echo _h(_t('error')) ?>: <?php echo _h($error) ?>
                 </div>
             <?php } ?>
 
@@ -162,7 +162,7 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
     }
 ?>
 
-                <button type="submit" name="stcms--action" value="save" class="btn btn-primary my-5">Save</button>
+                <button type="submit" name="stcms--action" value="save" class="btn btn-primary my-5"><?php echo _h(_t('save')) ?></button>
 
             </form>
         </div>

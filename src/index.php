@@ -16,14 +16,14 @@ $schemas = new Schemas();
 
 <header class="navbar bg-light sticky-top shadow">
     <div class="container-xl">
-        <a href="./" class="navbar-brand mb-0 h1">ADMIN</a>
+        <a href="./" class="navbar-brand mb-0 h1"><?php echo _h(_t('admin')) ?></a>
     </div>
 </header>
 
 <div class="container-xl mt-4">
 
     <p>
-        choose schema
+        <?php echo _h(_t('choose_a_schema')) ?>
     </p>
 
 

@@ -31,7 +31,7 @@ class Config
         ];
     }
 
-    private static function get(string $key, $default = null)
+    public static function get(string $key, $default = null)
     {
         self::load();
         

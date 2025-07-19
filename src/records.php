@@ -42,7 +42,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
 
 <header class="navbar bg-light sticky-top shadow">
     <div class="container-xl">
-        <a href="./" class="navbar-brand mb-0 h1">ADMIN</a>
+        <a href="./" class="navbar-brand mb-0 h1"><?php echo _h(_t('admin')) ?></a>
     </div>
 </header>
 
@@ -52,7 +52,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
         <!-- Sidebar -->
         <div class="col-md-3 col-lg-2 d-md-block d-none">
             <div class="bg-light p-3 rounded mb-4">
-                <h6 class="mb-3">Schemas</h6>
+                <h6 class="mb-3"><?php echo _h(_t('schemas')) ?></h6>
                 <div class="list-group list-group-flush">
                     <?php foreach($schemas->getAll() as $s) { ?>
                         <a href="./records.php?schema=<?php echo _h($s->name()) ?>" 
@@ -68,7 +68,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
         <div class="col-12 d-md-none mb-3">
             <div class="dropdown">
                 <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
-                    Current: <?php echo _h($schema) ?>
+                    <?php echo _h(_t('current')) ?>: <?php echo _h($schema) ?>
                 </button>
                 <ul class="dropdown-menu w-100">
                     <?php foreach($schemas->getAll() as $s) { ?>
@@ -83,19 +83,19 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
         <div class="col-md-9 col-lg-10">
             <?php if ($error) { ?>
                 <div class="alert alert-danger" role="alert">
-                    Save Error : <?php echo _h($error) ?>
+                    <?php echo _h(_t('error')) ?>: <?php echo _h($error) ?>
                 </div>
             <?php } ?>
 
-            <a href="./record.php?schema=<?php echo _h($schema) ?>" class="btn btn-primary mb-4">Add new record</a>
+            <a href="./record.php?schema=<?php echo _h($schema) ?>" class="btn btn-primary mb-4"><?php echo _h(_t('add_new_record')) ?></a>
 
             <table class="table table-striped">
         <thead class="table-dark">
             <tr>
                 <th scope="col" style="width: 80px;">#</th>
-                <th scope="col">data</th>
-                <th scope="col" style="width: 200px;">edited at</th>
-                <th scope="col" style="width: 150px;">action</th>
+                <th scope="col"><?php echo _h(_t('content')) ?></th>
+                <th scope="col" style="width: 200px;"><?php echo _h(_t('last_modified')) ?></th>
+                <th scope="col" style="width: 150px;"><?php echo _h(_t('actions')) ?></th>
             </tr>
         </thead>
         <tbody>
@@ -140,7 +140,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
                 </td>
                 <td class="pt-3 pb-0">
                     <p>
-                        created at:
+                        <?php echo _h(_t('created')) ?>:
                         <span class="text-muted">
 
                             <?php echo _h(date('Y-m-d H:i:s P', $r->createdAt())) ?>
@@ -149,7 +149,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
                     </p>
 
                     <p>
-                        updated at:
+                        <?php echo _h(_t('updated')) ?>:
                         <span class="text-muted">
 
                             <?php echo _h(date('Y-m-d H:i:s P', $r->updatedAt())) ?>
@@ -159,8 +159,8 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
                 </td>
                 <td class="pt-3 pb-0">
 
-                    <a href="./record.php?schema=<?php echo _h($schema) ?>&id=<?php echo _h($id) ?>" class="btn btn-secondary d-block mb-2">edit</a>
-                    <a href="./records.php?schema=<?php echo _h($schema) ?>&id=<?php echo _h($id) ?>&action=delete" onclick="return confirm('Delete record. Are you sure you want to do this?')" class="btn btn-danger d-block">delete</a>
+                    <a href="./record.php?schema=<?php echo _h($schema) ?>&id=<?php echo _h($id) ?>" class="btn btn-secondary d-block mb-2"><?php echo _h(_t('edit')) ?></a>
+                    <a href="./records.php?schema=<?php echo _h($schema) ?>&id=<?php echo _h($id) ?>&action=delete" onclick="return confirm('<?php echo _h(_t('delete_confirmation')) ?>')" class="btn btn-danger d-block"><?php echo _h(_t('delete')) ?></a>
 
                 </td>
             </tr>
