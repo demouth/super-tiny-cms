@@ -51,17 +51,31 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-3 col-lg-2 d-md-block d-none">
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-light border-0">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
                     <h6 class="mb-0 fw-semibold text-secondary"><?php echo _h(_t('schemas')) ?></h6>
                 </div>
                 <div class="list-group list-group-flush">
                     <?php foreach($schemas->getAll() as $s) { ?>
                         <a href="./records.php?schema=<?php echo _h($s->name()) ?>" 
-                           class="list-group-item list-group-item-action border-0 <?php echo $s->name() === $schema ? 'active' : '' ?>">
+                           class="list-group-item list-group-item-action <?php echo $s->name() === $schema ? 'active' : '' ?>">
                             <?php echo _h($s->name()) ?>
                         </a>
                     <?php } ?>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0 fw-semibold text-secondary"><?php echo _h(_t('media_management')) ?></h6>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="./upload-form.php" class="list-group-item list-group-item-action border-0">
+                        <?php echo _h(_t('upload_image')) ?>
+                    </a>
+                    <a href="./media.php" class="list-group-item list-group-item-action border-0">
+                        <?php echo _h(_t('uploaded_images')) ?>
+                    </a>
                 </div>
             </div>
         </div>
@@ -89,13 +103,13 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
             </div>
 
             <?php if ($error) { ?>
-                <div class="alert alert-danger border-0 shadow-sm" role="alert">
+                <div class="alert alert-danger" role="alert">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
                     <?php echo _h(_t('error')) ?>: <?php echo _h($error) ?>
                 </div>
             <?php } ?>
 
-            <div class="card border-0 shadow-sm">
+            <div class="card shadow-sm">
                 <table class="table table-hover mb-0">
         <thead class="table-dark">
             <tr>

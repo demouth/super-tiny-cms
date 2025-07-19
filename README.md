@@ -11,6 +11,7 @@ It's perfect when you want to use a CMS but WordPress is too heavy.
 
 - ✨ **2-column responsive layout** with sidebar navigation
 - 🌐 **Multi-language support** (English/Japanese auto-detection)
+- 📸 **Image upload & management** with secure file handling
 - ⚙️ **Configurable file paths** via config.php
 - 📱 **Mobile-friendly** interface
 - 📁 **File-based database** - no MySQL required
@@ -20,24 +21,31 @@ It's perfect when you want to use a CMS but WordPress is too heavy.
 
 1. Write the schema definition in `schemas.json`
 2. Grant write permission to the `.data/` directory
-3. Upload the src directory and set up user authentication to prevent ordinary users from accessing the src directory
-4. Optionally customize settings in `config.php`
+3. Create the `public/uploads/` directory with write permissions for image uploads
+4. Upload the src directory, place the public directory in the web server's public area, and configure access restrictions for the admin section
+5. Optionally customize settings in `config.php`
 
 
 ## Configuration (config.php)
 
-You can customize the CMS behavior by editing `src/config.php`:
+You can customize the CMS behavior by editing `src/public/admin/config.php`:
 
 ```php
 <?php
 
 return [
     'paths' => [
-        'data_dir' => __DIR__ . '/.data',        // Data storage directory
+        'data_dir' => __DIR__ . '/../.data',        // Data storage directory
         'schemas_file' => __DIR__ . '/schemas.json', // Schema definition file
     ],
     'language' => [
         'default' => 'auto', // Language setting: 'auto', 'en', 'ja'
+    ],
+    'uploads' => [
+        'max_size' => 5 * 1024 * 1024,              // Maximum file size (5MB)
+        'allowed_types' => ['image/jpeg', 'image/png', 'image/gif'], // Allowed image types
+        'upload_dir' => __DIR__ . '/../public/uploads', // Server upload directory
+        'public_url_path' => '/public/uploads',      // Web URL path for images
     ],
 ];
 ```
@@ -47,6 +55,13 @@ return [
 - `'auto'` - Automatically detect language from browser settings
 - `'en'` - Force English interface
 - `'ja'` - Force Japanese interface
+
+### Upload Settings
+
+- `max_size` - Maximum file size in bytes for image uploads
+- `allowed_types` - Array of allowed MIME types for uploads
+- `upload_dir` - Server directory where uploaded files are stored
+- `public_url_path` - Web URL path to access uploaded images
 
 
 ## Schema Definition (schemas.json)
@@ -85,9 +100,9 @@ You can register, modify, and delete data from the admin interface for the data 
 The registered data can be accessed as follows:
 
 ```php
-require_once '/path/to/src/libs/Database.php';
-require_once '/path/to/src/libs/RecordSet.php';
-require_once '/path/to/src/libs/Record.php';
+require_once '/path/to/src/public/admin/libs/Database.php';
+require_once '/path/to/src/public/admin/libs/RecordSet.php';
+require_once '/path/to/src/public/admin/libs/Record.php';
 
 use stcms\Database;
 
@@ -101,15 +116,43 @@ foreach($rs->getAll() as $id => $r) {
 }
 ```
 
+### Accessing Uploaded Images
+
+Images uploaded through the media manager can be accessed in your frontend:
+
+```php
+require_once '/path/to/src/public/admin/libs/MediaManager.php';
+
+use stcms\MediaManager;
+
+// Get all uploaded images
+$images = MediaManager::getUploadedFiles();
+foreach($images as $image) {
+    echo '<img src="' . MediaManager::getPublicUrl($image['filename']) . '" alt="">';
+}
+```
+
 
 ## Admin Interface
 
-Access the admin interface by navigating to `/src/` in your browser. The interface features:
+Access the admin interface by navigating to `/src/public/admin/` in your browser. The interface features:
 
 - **Sidebar navigation** for easy schema switching
+- **Content management** with full CRUD operations
+- **Image upload & gallery** with secure file handling
 - **Responsive design** that works on desktop and mobile
 - **Multi-language support** with automatic language detection
 - **Clean, modern UI** using Bootstrap
+
+### Media Management
+
+The CMS includes a built-in media management system:
+
+- **Upload images** with drag-and-drop or file selection
+- **Image gallery** with thumbnail previews
+- **Full-screen image preview** (click any image)
+- **Secure file storage** with hash-based filenames
+- **Automatic file validation** for supported formats
 
 
 ## Requirements
