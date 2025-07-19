@@ -163,3 +163,11 @@ The CMS includes a built-in media management system:
 - PHP 7.4 or higher
 - Web server (Apache, Nginx, etc.)
 - Write permissions for the data directory
+
+### PHP 5.3 Support
+
+For legacy environments requiring PHP 5.3 compatibility, use the dedicated branch:
+
+- **Branch**: [`php53`](https://github.com/demouth/super-tiny-cms/tree/php53)
+- **Compatibility**: PHP 5.3.0 - PHP 8.x
+- **Features**: Full functionality with legacy-compatible syntax
