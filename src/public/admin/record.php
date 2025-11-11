@@ -60,7 +60,7 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, array('options' =>
                 $r->set($name, $val);
                 break;
             case Schema::TYPE_IMAGES:
-                $val = filter_input(INPUT_POST, $name, FILTER_DEFAULT, ['options' => ['default'=>'']]);
+                $val = filter_input(INPUT_POST, $name, FILTER_DEFAULT, array('options' => array('default'=>'')));
                 $r->set($name, $val);
                 break;
             defailt:
@@ -282,7 +282,7 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, array('options' =>
                     <?php
                     $uploadedImages = MediaManager::getUploadedFiles();
                     $currentImagesJson = $r->exists($name) ? $r->get($name) : '';
-                    $currentImages = [];
+                    $currentImages = array();
                     if ($currentImagesJson) {
                         $decoded = json_decode($currentImagesJson, true);
                         if (is_array($decoded)) {
@@ -314,7 +314,7 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, array('options' =>
                                                         <input type="text"
                                                                class="form-control form-control-sm image-caption"
                                                                placeholder="<?php echo _h(_t('caption')) ?>"
-                                                               value="<?php echo _h($imageData['caption'] ?? '') ?>"
+                                                               value="<?php echo _h(isset($imageData['caption']) ? $imageData['caption'] : '') ?>"
                                                                onchange="updateImagesField('<?php echo _h($name) ?>')">
                                                     </div>
                                                     <div class="col-auto d-flex flex-column gap-1">

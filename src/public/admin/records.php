@@ -150,7 +150,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, array('options' => array('
                         $schemaFields = $schemaObj->getAll();
                         foreach($keys as $key) {
                             if ($r->exists($key)) {
-                                $fieldType = $schemaFields[$key] ?? '';
+                                $fieldType = isset($schemaFields[$key]) ? $schemaFields[$key] : '';
                                 $value = $r->get($key);
                     ?>
 
@@ -164,7 +164,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, array('options' => array('
                                     <div class="mb-3 lh-base text-break">
 
                                         <?php if ($fieldType === Schema::TYPE_IMAGES) {
-                                            $images = [];
+                                            $images = array();
                                             if ($value) {
                                                 $decoded = json_decode($value, true);
                                                 if (is_array($decoded)) {
@@ -175,7 +175,8 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, array('options' => array('
                                                 echo '<div class="d-flex flex-wrap gap-2">';
                                                 foreach ($images as $imageData) {
                                                     echo '<div class="position-relative" style="width: 80px;">';
-                                                    echo '<img src="' . _h(MediaManager::getPublicUrl($imageData['filename'])) . '" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;" alt="' . _h($imageData['caption'] ?? '') . '">';
+                                                    $caption = isset($imageData['caption']) ? $imageData['caption'] : '';
+                                                    echo '<img src="' . _h(MediaManager::getPublicUrl($imageData['filename'])) . '" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;" alt="' . _h($caption) . '">';
                                                     if (!empty($imageData['caption'])) {
                                                         echo '<small class="d-block text-muted text-truncate mt-1" title="' . _h($imageData['caption']) . '">' . _h($imageData['caption']) . '</small>';
                                                     }
