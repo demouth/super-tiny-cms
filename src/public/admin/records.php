@@ -4,11 +4,14 @@ require_once __DIR__.'/libs/Database.php';
 require_once __DIR__.'/libs/RecordSet.php';
 require_once __DIR__.'/libs/Record.php';
 require_once __DIR__.'/libs/Schemas.php';
+require_once __DIR__.'/libs/MediaManager.php';
 require_once __DIR__.'/libs/functions.php';
 
 use stcms\Config;
 use stcms\Database;
 use stcms\Schemas;
+use stcms\Schema;
+use stcms\MediaManager;
 
 // Initialize timezone from config
 Config::initTimezone();
@@ -17,6 +20,7 @@ Config::initTimezone();
 $schemas = new Schemas();
 $schema = filter_input(INPUT_GET, 'schema', FILTER_DEFAULT, array('options' => array('default'=>'')));
 if (!$schemas->exists($schema)) return;
+$schemaObj = $schemas->get($schema);
 $db = new Database($schema);
 $rs = $db->get();
 
@@ -143,8 +147,11 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, array('options' => array('
 
                     <?php
                         $keys = $r->keys();
+                        $schemaFields = $schemaObj->getAll();
                         foreach($keys as $key) {
                             if ($r->exists($key)) {
+                                $fieldType = $schemaFields[$key] ?? '';
+                                $value = $r->get($key);
                     ?>
 
                                 <div class="">
@@ -156,7 +163,31 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, array('options' => array('
 
                                     <div class="mb-3 lh-base text-break">
 
-                                        <?php echo _h($r->get($key)) ?>
+                                        <?php if ($fieldType === Schema::TYPE_IMAGES) {
+                                            $images = [];
+                                            if ($value) {
+                                                $decoded = json_decode($value, true);
+                                                if (is_array($decoded)) {
+                                                    $images = $decoded;
+                                                }
+                                            }
+                                            if (count($images) > 0) {
+                                                echo '<div class="d-flex flex-wrap gap-2">';
+                                                foreach ($images as $imageData) {
+                                                    echo '<div class="position-relative" style="width: 80px;">';
+                                                    echo '<img src="' . _h(MediaManager::getPublicUrl($imageData['filename'])) . '" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;" alt="' . _h($imageData['caption'] ?? '') . '">';
+                                                    if (!empty($imageData['caption'])) {
+                                                        echo '<small class="d-block text-muted text-truncate mt-1" title="' . _h($imageData['caption']) . '">' . _h($imageData['caption']) . '</small>';
+                                                    }
+                                                    echo '</div>';
+                                                }
+                                                echo '</div>';
+                                            } else {
+                                                echo _h(_t('no_images_selected'));
+                                            }
+                                        } else {
+                                            echo _h($value);
+                                        } ?>
 
                                         &nbsp;
 

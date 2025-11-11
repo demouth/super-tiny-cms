@@ -73,7 +73,8 @@ return [
     - `textarea` - Multi-line text input
     - `url` - URL input with validation
     - `date` - Date picker
-    - `image` - Image selection from uploaded files
+    - `image` - Single image selection from uploaded files
+    - `images` - Multiple images with captions (sortable)
 
 ### Example Configuration
 
@@ -83,6 +84,7 @@ return [
     "title":"text",
     "detail":"textarea",
     "thumbnail": "image",
+    "gallery": "images",
     "url": "url",
     "date": "date"
   },
