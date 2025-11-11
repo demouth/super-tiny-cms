@@ -108,8 +108,10 @@ The registered data can be accessed as follows:
 require_once '/path/to/src/public/admin/libs/Database.php';
 require_once '/path/to/src/public/admin/libs/RecordSet.php';
 require_once '/path/to/src/public/admin/libs/Record.php';
+require_once '/path/to/src/public/admin/libs/MediaManager.php';
 
 use stcms\Database;
+use stcms\MediaManager;
 
 $db = new Database('news');
 $rs = $db->get();
@@ -118,6 +120,25 @@ foreach($rs->getAll() as $id => $r) {
     echo "ID: " . $id . "\n";
     echo "Title: " . $r->get('title') . "\n";
     echo "Detail: " . $r->get('detail') . "\n";
+
+    // Single image field
+    $thumbnail = $r->get('thumbnail');
+    if ($thumbnail) {
+        echo '<img src="' . MediaManager::getPublicUrl($thumbnail) . '" alt="">';
+    }
+
+    // Multiple images field (images type)
+    $gallery = $r->get('gallery'); // Returns array directly
+    foreach ($gallery as $imageData) {
+        $filename = $imageData['filename'];
+        $caption = $imageData['caption'];
+        echo '<figure>';
+        echo '<img src="' . MediaManager::getPublicUrl($filename) . '" alt="' . htmlspecialchars($caption) . '">';
+        if ($caption) {
+            echo '<figcaption>' . htmlspecialchars($caption) . '</figcaption>';
+        }
+        echo '</figure>';
+    }
 }
 ```
 

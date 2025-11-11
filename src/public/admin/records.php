@@ -164,13 +164,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, array('options' => array('
                                     <div class="mb-3 lh-base text-break">
 
                                         <?php if ($fieldType === Schema::TYPE_IMAGES) {
-                                            $images = array();
-                                            if ($value) {
-                                                $decoded = json_decode($value, true);
-                                                if (is_array($decoded)) {
-                                                    $images = $decoded;
-                                                }
-                                            }
+                                            $images = is_array($value) ? $value : array();
                                             if (count($images) > 0) {
                                                 echo '<div class="d-flex flex-wrap gap-2">';
                                                 foreach ($images as $imageData) {

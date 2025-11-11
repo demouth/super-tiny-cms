@@ -61,7 +61,9 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, array('options' =>
                 break;
             case Schema::TYPE_IMAGES:
                 $val = filter_input(INPUT_POST, $name, FILTER_DEFAULT, array('options' => array('default'=>'')));
-                $r->set($name, $val);
+                // JSON文字列を配列にデコードして保存
+                $images = json_decode($val, true);
+                $r->set($name, is_array($images) ? $images : array());
                 break;
             defailt:
                 break;
@@ -281,14 +283,11 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, array('options' =>
 
                     <?php
                     $uploadedImages = MediaManager::getUploadedFiles();
-                    $currentImagesJson = $r->exists($name) ? $r->get($name) : '';
-                    $currentImages = array();
-                    if ($currentImagesJson) {
-                        $decoded = json_decode($currentImagesJson, true);
-                        if (is_array($decoded)) {
-                            $currentImages = $decoded;
-                        }
+                    $currentImages = $r->exists($name) ? $r->get($name) : array();
+                    if (!is_array($currentImages)) {
+                        $currentImages = array();
                     }
+                    $currentImagesJson = json_encode($currentImages);
                     ?>
 
                     <input type="hidden" name="<?php echo _h($name) ?>" id="images-field-<?php echo _h($name) ?>" value="<?php echo _h($currentImagesJson) ?>">
