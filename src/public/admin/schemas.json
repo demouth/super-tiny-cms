@@ -3,7 +3,8 @@
     "title":"text",
     "detail":"textarea",
     "url": "url",
-    "date": "date"
+    "date": "date",
+    "images": "images"
   },
   "articles": {
     "title":"text",

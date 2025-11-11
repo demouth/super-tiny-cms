@@ -35,4 +35,8 @@ return [
     'choose_image' => '画像を選択',
     'select_from_uploaded_images' => 'アップロード済み画像から選択',
     'upload_images_from_media' => '画像はメディア管理からアップロードしてください：',
+    'caption' => 'キャプション',
+    'no_images_selected' => '画像が選択されていません',
+    'add_image' => '画像を追加',
+    'image_already_added' => 'この画像は既に追加されています',
 ];

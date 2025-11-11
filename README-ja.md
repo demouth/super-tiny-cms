@@ -73,7 +73,8 @@ return [
     - `textarea` - 複数行テキスト入力
     - `url` - URL入力（検証付き）
     - `date` - 日付ピッカー
-    - `image` - アップロード済みファイルからの画像選択
+    - `image` - アップロード済みファイルからの単一画像選択
+    - `images` - キャプション付き複数画像（並び替え可能）
 
 ### 設定例
 
@@ -83,6 +84,7 @@ return [
     "title":"text",
     "detail":"textarea",
     "thumbnail": "image",
+    "gallery": "images",
     "url": "url",
     "date": "date"
   },

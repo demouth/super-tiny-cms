@@ -35,4 +35,8 @@ return [
     'choose_image' => 'Choose Image',
     'select_from_uploaded_images' => 'Select from Uploaded Images',
     'upload_images_from_media' => 'Please upload images from Media Management:',
+    'caption' => 'Caption',
+    'no_images_selected' => 'No images selected',
+    'add_image' => 'Add Image',
+    'image_already_added' => 'This image has already been added',
 ];

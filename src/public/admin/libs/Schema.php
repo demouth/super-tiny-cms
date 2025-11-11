@@ -10,6 +10,7 @@ class Schema
     const TYPE_URL = 'url';
     const TYPE_DATE = 'date';
     const TYPE_IMAGE = 'image';
+    const TYPE_IMAGES = 'images';
     protected string $name;
     protected array $cols;
     public static function parse(string $name, array $array): Schema
@@ -27,6 +28,8 @@ class Schema
                 case static::TYPE_DATE:
                     // fallthrough
                 case static::TYPE_IMAGE:
+                    // fallthrough
+                case static::TYPE_IMAGES:
                     break;
                 default:
                     throw new RuntimeException('no such type : '. $type);
