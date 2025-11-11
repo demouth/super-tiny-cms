@@ -171,7 +171,7 @@ if (filter_input(INPUT_POST, 'stcms--action', FILTER_DEFAULT, ['options' => ['de
 
     <?php } else if($type === Schema::TYPE_TEXTAREA) { ?>
 
-                    <textarea class="form-control" rows="3" name="<?php echo _h($name) ?>"><?php
+                    <textarea class="form-control" rows="6" name="<?php echo _h($name) ?>"><?php
                         if ($r->exists($name)) echo _h($r->get($name));
                     ?></textarea>
 
