@@ -57,7 +57,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
                 </div>
                 <div class="list-group list-group-flush">
                     <?php foreach($schemas->getAll() as $s) { ?>
-                        <a href="./records.php?schema=<?php echo _h($s->name()) ?>" 
+                        <a href="./records.php?schema=<?php echo _h($s->name()) ?>"
                            class="list-group-item list-group-item-action <?php echo $s->name() === $schema ? 'active' : '' ?>">
                             <?php echo _h($s->name()) ?>
                         </a>
@@ -88,7 +88,7 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
                 </button>
                 <ul class="dropdown-menu w-100">
                     <?php foreach($schemas->getAll() as $s) { ?>
-                        <li><a class="dropdown-item <?php echo $s->name() === $schema ? 'active' : '' ?>" 
+                        <li><a class="dropdown-item <?php echo $s->name() === $schema ? 'active' : '' ?>"
                                href="./records.php?schema=<?php echo _h($s->name()) ?>"><?php echo _h($s->name()) ?></a></li>
                     <?php } ?>
                 </ul>
@@ -142,16 +142,21 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
                             if ($r->exists($key)) {
                     ?>
 
-                                <p class="lh-1 mb-2">
+                                <div class="">
+                                    <small class="d-block mb-1 text-muted fw-light">
 
-                                    <?php echo _h($key) ?> :
+                                        <?php echo _h($key) ?> :
 
-                                    <span class="text-muted">
+                                    </small>
+
+                                    <div class="mb-3 lh-base text-break">
 
                                         <?php echo _h($r->get($key)) ?>
 
-                                    </span>
-                                </p>
+                                        &nbsp;
+
+                                    </div>
+                                </div>
 
                     <?php
                             }
@@ -160,23 +165,31 @@ if (filter_input(INPUT_GET, 'action', FILTER_DEFAULT, ['options' => ['default'=>
 
                 </td>
                 <td class="pt-3 pb-0">
-                    <p>
-                        <?php echo _h(_t('created')) ?>:
-                        <span class="text-muted">
+                    <div>
+                        <small class="d-block mb-1 text-muted fw-light">
+
+                            <?php echo _h(_t('created')) ?>:
+
+                        </small>
+                        <div class="mb-3 lh-base text-break">
 
                             <?php echo _h(date('Y-m-d H:i:s P', $r->createdAt())) ?>
 
-                        </span>
-                    </p>
+                        </div>
+                    </div>
 
-                    <p>
-                        <?php echo _h(_t('updated')) ?>:
-                        <span class="text-muted">
+                    <div>
+                        <small class="d-block mb-2 text-muted fw-light">
+
+                            <?php echo _h(_t('updated')) ?>:
+
+                        </small>
+                        <div class="mb-3 lh-base text-break">
 
                             <?php echo _h(date('Y-m-d H:i:s P', $r->updatedAt())) ?>
 
-                        </span>
-                    </p>
+                        </div>
+                    </div>
                 </td>
                 <td class="pt-3 pb-0">
 
