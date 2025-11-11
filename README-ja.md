@@ -108,8 +108,10 @@ schemas.jsonで定義したデータ構造に対して、管理画面からデ�
 require_once '/path/to/src/public/admin/libs/Database.php';
 require_once '/path/to/src/public/admin/libs/RecordSet.php';
 require_once '/path/to/src/public/admin/libs/Record.php';
+require_once '/path/to/src/public/admin/libs/MediaManager.php';
 
 use stcms\Database;
+use stcms\MediaManager;
 
 $db = new Database('news');
 $rs = $db->get();
@@ -118,6 +120,25 @@ foreach($rs->getAll() as $id => $r) {
     echo "ID: " . $id . "\n";
     echo "タイトル: " . $r->get('title') . "\n";
     echo "詳細: " . $r->get('detail') . "\n";
+
+    // 単一画像フィールド
+    $thumbnail = $r->get('thumbnail');
+    if ($thumbnail) {
+        echo '<img src="' . MediaManager::getPublicUrl($thumbnail) . '" alt="">';
+    }
+
+    // 複数画像フィールド (images タイプ)
+    $gallery = $r->get('gallery'); // 配列として直接取得できる
+    foreach ($gallery as $imageData) {
+        $filename = $imageData['filename'];
+        $caption = $imageData['caption'];
+        echo '<figure>';
+        echo '<img src="' . MediaManager::getPublicUrl($filename) . '" alt="' . htmlspecialchars($caption) . '">';
+        if ($caption) {
+            echo '<figcaption>' . htmlspecialchars($caption) . '</figcaption>';
+        }
+        echo '</figure>';
+    }
 }
 ```
 
